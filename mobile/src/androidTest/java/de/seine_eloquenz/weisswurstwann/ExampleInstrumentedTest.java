@@ -1,4 +1,4 @@
-package de.seine_eloquenz.weiwurstwann;
+package de.seine_eloquenz.weisswurstwann;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
