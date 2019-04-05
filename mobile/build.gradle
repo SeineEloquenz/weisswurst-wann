@@ -28,4 +28,6 @@ dependencies {
     wearApp project(':wear')
     implementation 'com.google.android.gms:play-services-wearable:16.0.1'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version: '3.3.1'
+    implementation group: 'org.apache.cxf', name: 'cxf-bundle-jaxrs', version: '2.2.9'
 }
