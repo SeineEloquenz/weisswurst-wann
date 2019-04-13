@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">WeißwurstWann</string>
+    <string name="notCheckedYet">Bisher wurden keine Daten abgerufen!</string>
+    <string name="update">Update</string>
+    <string name="wwavailable">Morgen gibt es Weißwürste! Hurra!</string>
+    <string name="wwnotavailable">Morgen gibt es keine Weißwürste :(</string>
+    <string name="weisswurst">Weißwurst</string>
+    <string name="title">Weißwurst! Wann?</string>
 </resources>
