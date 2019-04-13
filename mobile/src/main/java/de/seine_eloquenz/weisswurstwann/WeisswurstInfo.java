@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,17 +23,15 @@ public final class WeisswurstInfo {
     private static final long ONE_DAY_MS = 24 * 3600 * 1000;
     private static final String GET_MEALS = "/canteens/" + CANTEEN_ID + "/days/" + "%s" + "/meals";
     private static final String OPEN_MENSA_URL = "http://openmensa.org/api/v2";
-    private static final String SEARCH_REGEX = "[Ww]ei(ss|ß)w[uü]rst(e?)";
+    private static final String SEARCH_REGEX = ".* [Ww]ei(ss|ß)w[uü]rst(e?) .*";
 
     private final Gson gson;
-    private final Client client;
 
     /**
      * Creates a new {@link WeisswurstInfo}
      */
     public WeisswurstInfo() {
         this.gson = new Gson();
-        this.client = ClientBuilder.newClient();
     }
 
     /**
@@ -55,13 +55,23 @@ public final class WeisswurstInfo {
      */
     private JsonArray getMeals() {
         String uri = OPEN_MENSA_URL + String.format(GET_MEALS, this.getDateToCheck());
-        WebTarget target = client.target(uri);
+        URL url;
         try {
-            String resp = target.request().get(String.class);
-            return gson.fromJson(resp, JsonArray.class);
-        } catch (javax.ws.rs.NotFoundException e) {
+            url = new URL(uri);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
             return new JsonArray();
         }
+        try {
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            JsonArray resp = gson.fromJson(new InputStreamReader(connection.getInputStream()), JsonArray.class);
+            connection.disconnect();
+            return resp;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new JsonArray();
     }
 
     /**
