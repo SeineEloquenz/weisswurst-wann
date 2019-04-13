@@ -22,7 +22,7 @@ public class WWIntentService extends IntentService {
         WeisswurstInfo info = new WeisswurstInfo();
         if (info.checkWeisswurstStatus()) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "WeisswurstWann")
-                    .setSmallIcon(android.R.drawable.sym_def_app_icon) //TODO figure out why the fricking R class cant be found, circle for now
+                    .setSmallIcon(R.drawable.ww_notif)
                     .setContentTitle("WeisswurstWann!?")
                     .setContentText(info.getNotificationText())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
