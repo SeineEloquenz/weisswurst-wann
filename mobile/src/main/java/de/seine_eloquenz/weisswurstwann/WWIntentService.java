@@ -23,7 +23,7 @@ public class WWIntentService extends IntentService {
         if (info.checkWeisswurstStatus()) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "WeisswurstWann")
                     .setSmallIcon(R.drawable.ww_notif)
-                    .setContentTitle("WeisswurstWann!?")
+                    .setContentTitle("Weißwürste!")
                     .setContentText(info.getNotificationText())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat not = NotificationManagerCompat.from(getApplicationContext());

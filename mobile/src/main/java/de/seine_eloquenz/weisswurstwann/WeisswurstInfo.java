@@ -35,7 +35,7 @@ public final class WeisswurstInfo {
     }
 
     public String getNotificationText() {
-        return "Am nächsten Werktag gibt es Weißwürste in der Cafete!";
+        return "Morgen gibt's Weißwürste in der KIT-Cafeteria!";
     }
 
     /**
