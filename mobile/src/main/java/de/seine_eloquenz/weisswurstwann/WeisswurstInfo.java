@@ -34,6 +34,10 @@ public final class WeisswurstInfo {
         this.gson = new Gson();
     }
 
+    public String getNotificationText() {
+        return "Am nächsten Werktag gibt es Weißwürste in der Cafete!";
+    }
+
     /**
      * Checks whether weisswurst will be available the next weekday
      * @return true if weisswurst available, false if not
