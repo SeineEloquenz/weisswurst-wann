@@ -1,15 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="de.seine_eloquenz.weisswurstwann">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <application android:allowBackup="true"
-                 android:label="@string/app_name"
-                 android:icon="@mipmap/ic_launcher"
-                 android:roundIcon="@mipmap/ic_launcher_round"
-                 android:supportsRtl="true"
-                 android:usesCleartextTraffic="true"
-                 android:theme="@style/AppTheme">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
         <receiver
-                android:name="de.seine_eloquenz.weisswurstwann.BootListener"
+                android:name=".BootListener"
                 android:enabled="true"
                 android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
@@ -17,14 +21,18 @@
             </intent-filter>
         </receiver>
         <receiver
-                android:name="de.seine_eloquenz.weisswurstwann.WWAlarmReceiver"
-                android:process =":remote"/>
-        <service android:name="de.seine_eloquenz.weisswurstwann.WWIntentService"
-                 android:exported="false"/>
-        <activity android:name="de.seine_eloquenz.weisswurstwann.MainActivity">
-            <intent-filter >
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                android:name=".WWAlarmReceiver"
+                android:process=":remote"/>
+
+        <service
+                android:name=".WWIntentService"
+                android:exported="false"/>
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>
