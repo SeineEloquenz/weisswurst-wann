@@ -20,7 +20,7 @@ public class WWIntentService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
         createNotificationChannel();
         WeisswurstInfo info = new WeisswurstInfo();
-        if (info.checkWeisswurstStatus()) {
+        if (info.checkWeisswurstStatusTomorrow()) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "WeisswurstWann")
                     .setSmallIcon(R.drawable.ww_notif)
                     .setContentTitle("Weißwürste!")

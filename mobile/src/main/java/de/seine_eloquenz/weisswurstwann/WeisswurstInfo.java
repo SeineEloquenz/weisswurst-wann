@@ -26,12 +26,14 @@ public final class WeisswurstInfo {
     private static final String SEARCH_REGEX = ".* [Ww]ei(ss|ß)w[uü]rst(e?) .*";
 
     private final Gson gson;
+    private final SimpleDateFormat sm;
 
     /**
      * Creates a new {@link WeisswurstInfo}
      */
     public WeisswurstInfo() {
         this.gson = new Gson();
+        sm = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
     }
 
     public String getNotificationText() {
@@ -42,8 +44,35 @@ public final class WeisswurstInfo {
      * Checks whether weisswurst will be available the next weekday
      * @return true if weisswurst available, false if not
      */
-    public boolean checkWeisswurstStatus() {
-        JsonArray meals = this.getMeals();
+    public boolean checkWeisswurstStatusTomorrow() {
+        return checkWeisswurstStatus(this.getDateToCheck());
+    }
+
+    /**
+     * Checks the next week for days where weisswurst is available
+     * neg means day has already passed
+     * zero means no weisswurst
+     * pos means weisswurst
+     * @return
+     */
+    public int[] checkWeisswurstStatusWeek() {
+        int[] ret = {-1, -1, -1, -1, -1};
+        String[] dates = getNextWeekDates();
+        for (int i = 0; i < ret.length && i < dates.length; i++) {
+            if (!dates[i].equals("i")) {
+                ret[i] = checkWeisswurstStatus(dates[i]) ? 1 : 0;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Checks whether weisswurst will be available the next weekday
+     * @param date formatted date to check for
+     * @return true if weisswurst available, false if not
+     */
+    public boolean checkWeisswurstStatus(String date) {
+        JsonArray meals = this.getMeals(date);
         for (JsonElement meal : meals) {
             String name = meal.getAsJsonObject().get("name").getAsString();
             if (name.matches(SEARCH_REGEX)) {
@@ -57,8 +86,8 @@ public final class WeisswurstInfo {
      * Gets the {@link JsonArray} of the meals on the next weekday
      * @return jsonarry with the meals
      */
-    private JsonArray getMeals() {
-        String uri = OPEN_MENSA_URL + String.format(GET_MEALS, this.getDateToCheck());
+    private JsonArray getMeals(String date) {
+        String uri = OPEN_MENSA_URL + String.format(GET_MEALS, date);
         URL url;
         try {
             url = new URL(uri);
@@ -83,7 +112,6 @@ public final class WeisswurstInfo {
      * @return date string
      */
     private String getDateToCheck() {
-        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
         Date date = new Date(System.currentTimeMillis() + ONE_DAY_MS);
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -93,5 +121,51 @@ public final class WeisswurstInfo {
             date.setTime(System.currentTimeMillis() + 2 * ONE_DAY_MS);
         }
         return sm.format(date);
+    }
+
+    /**
+     * Gets a yyyy-MM-dd formatted date string of the next week day
+     * @return date string
+     */
+    private String[] getNextWeekDates() {
+        Date date = new Date(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+            date.setTime(System.currentTimeMillis() + 2 * ONE_DAY_MS);
+        } else if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            date.setTime(System.currentTimeMillis() + ONE_DAY_MS);
+        }
+        cal.setTime(date);
+        String[] dates = {"i", "i", "i", "i", "i"};
+        switch (cal.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.MONDAY:
+                dates[0] = sm.format(date);
+                dates[1] = sm.format(new Date(date.getTime() + ONE_DAY_MS));
+                dates[2] = sm.format(new Date(date.getTime() + 2 * ONE_DAY_MS));
+                dates[3] = sm.format(new Date(date.getTime() + 3 * ONE_DAY_MS));
+                dates[4] = sm.format(new Date(date.getTime() + 4 * ONE_DAY_MS));
+                break;
+            case Calendar.TUESDAY:
+                dates[1] = sm.format(date);
+                dates[2] = sm.format(new Date(date.getTime() + ONE_DAY_MS));
+                dates[3] = sm.format(new Date(date.getTime() + 2 * ONE_DAY_MS));
+                dates[4] = sm.format(new Date(date.getTime() + 3 * ONE_DAY_MS));
+                break;
+            case Calendar.WEDNESDAY:
+                dates[2] = sm.format(date);
+                dates[3] = sm.format(new Date(date.getTime() + ONE_DAY_MS));
+                dates[4] = sm.format(new Date(date.getTime() + 2 * ONE_DAY_MS));
+                break;
+            case Calendar.THURSDAY:
+                dates[3] = sm.format(date);
+                dates[4] = sm.format(new Date(date.getTime() + ONE_DAY_MS));
+                break;
+            case Calendar.FRIDAY:
+                dates[4] = sm.format(date);
+                break;
+            default:
+        }
+        return dates;
     }
 }

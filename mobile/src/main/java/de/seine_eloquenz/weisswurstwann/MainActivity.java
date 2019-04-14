@@ -12,7 +12,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity {
 
-    private static boolean wwStatus;
+    private static String wwStatus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,24 +36,30 @@ public class MainActivity extends Activity {
         CheckWeisswurstTask task = new CheckWeisswurstTask();
         TextView text = findViewById(R.id.wwtext);
         task.execute();
-        if (wwStatus) {
-            text.setText(R.string.wwavailable);
-        } else {
-            text.setText(R.string.wwnotavailable);
-        }
+        text.setText(wwStatus);
     }
 
-    private static class CheckWeisswurstTask extends AsyncTask<String, Integer, Boolean> {
+    private static class CheckWeisswurstTask extends AsyncTask<String, Integer, int[]> {
 
         @Override
-        protected Boolean doInBackground(final String... strings) {
+        protected int[] doInBackground(final String... strings) {
             WeisswurstInfo weisswurstInfo = new WeisswurstInfo();
-            return weisswurstInfo.checkWeisswurstStatus();
+            return weisswurstInfo.checkWeisswurstStatusWeek();
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            wwStatus = result;
+        protected void onPostExecute(int[] result) {
+            String res = "";
+            for (int r : result) {
+                if (r < 0) {
+                    res = res + "-";
+                } else if (r == 0) {
+                    res = res + "n";
+                } else {
+                    res = res + "y";
+                }
+            }
+            wwStatus = res;
         }
     }
 }

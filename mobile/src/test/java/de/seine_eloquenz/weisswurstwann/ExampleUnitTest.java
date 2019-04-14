@@ -13,6 +13,13 @@ public class ExampleUnitTest {
     @Ignore
     @Test
     public void test() {
-        boolean weisswurst = (new WeisswurstInfo()).checkWeisswurstStatus();
+        boolean weisswurst = (new WeisswurstInfo()).checkWeisswurstStatusTomorrow();
+    }
+
+    @Ignore
+    @Test
+    public void testWeek() {
+        int[] ww = (new WeisswurstInfo()).checkWeisswurstStatusWeek();
+        int a = 1;
     }
 }
