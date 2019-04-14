@@ -14,7 +14,8 @@
                android:src="@mipmap/weisswurstwann"
                android:contentDescription="@string/weisswurst"
                android:gravity="center"
-               android:paddingTop="50dp"/>
+               android:paddingTop="50dp"
+               android:tooltipText="@string/logotext"/>
     <GridLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
@@ -32,7 +33,8 @@
                     android:id="@+id/wwmon"
                     android:contentDescription="@string/monday"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    android:layout_width="match_parent"
+                    android:tooltipText="@string/monday"/>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
                 android:layout_columnWeight="1"
@@ -42,7 +44,8 @@
                     android:id="@+id/wwtue"
                     android:contentDescription="@string/tuesday"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    android:layout_width="match_parent"
+                    android:tooltipText="@string/tuesday"/>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
                 android:layout_columnWeight="1"
@@ -52,7 +55,8 @@
                     android:id="@+id/wwwed"
                     android:contentDescription="@string/wednesday"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    android:layout_width="match_parent"
+                    android:tooltipText="@string/wednesday"/>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:layout_columnWeight="1"
@@ -62,7 +66,8 @@
                     android:id="@+id/wwthu"
                     android:contentDescription="@string/thursday"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    android:layout_width="match_parent"
+                    android:tooltipText="@string/thursday"/>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
                 android:layout_columnWeight="1"
@@ -72,7 +77,8 @@
                     android:id="@+id/wwfri"
                     android:contentDescription="@string/friday"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    android:layout_width="match_parent"
+            android:tooltipText="@string/friday"/>
         </android.support.v7.widget.CardView>
 
     </GridLayout>
@@ -81,5 +87,6 @@
                                                   android:layout_height="wrap_content"
                                                   android:text="@string/update"
                                                   android:gravity="center"
-                                                  android:backgroundTint="@color/colorAccent"/>
+                                                  android:backgroundTint="@color/colorAccent"
+                                                  android:tooltipText="@string/updateInfo"/>
 </LinearLayout>

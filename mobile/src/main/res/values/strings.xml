@@ -6,4 +6,11 @@
     <string name="wwnotavailable">Morgen gibt es keine Weißwürste :(</string>
     <string name="weisswurst">Weißwurst</string>
     <string name="title">Weißwurst! Wann?</string>
+    <string name="friday">Freitag</string>
+    <string name="thursday">Donnerstag</string>
+    <string name="wednesday">Mittwoch</string>
+    <string name="tuesday">Dienstag</string>
+    <string name="monday">Montag</string>
+    <string name="logotext">Mmmmh, lecker Weißwürste…</string>
+    <string name="updateInfo">Aktualisiere die angezeigten Informationen</string>
 </resources>

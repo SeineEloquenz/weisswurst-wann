@@ -1,7 +1,5 @@
 package de.seine_eloquenz.weisswurstwann;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +11,8 @@ public class BootListener extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        Scheduler.scheduleAlarm(context);
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            Scheduler.scheduleAlarm(context);
+        }
     }
 }
