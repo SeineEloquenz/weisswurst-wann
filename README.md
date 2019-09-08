@@ -6,4 +6,3 @@
 ``'Weißwurst! Wann?`` gives the user an overview over the next week and shows in simple red/green boxes whether the KIT cafeteria offers weißwürste the respective day.
 # Known Issues
 * Notifications for the next workday don't seem to work correctly
-* When the OpenMensa server doesn't respond, no error message is shown, but instead all days are updated to no weißwürste available
