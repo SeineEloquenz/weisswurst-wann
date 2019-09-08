@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 /**
  * The Main Activity of weisswurst wann
@@ -46,6 +49,9 @@ public class MainActivity extends Activity {
         updateStatusIcon(wed, wwStatus.charAt(2));
         updateStatusIcon(thu, wwStatus.charAt(3));
         updateStatusIcon(fri, wwStatus.charAt(4));
+        if (wwStatus.contains("-")) {
+            Toast.makeText(this, this.getString(R.string.connectionErrorMessage), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateStatusIcon(ImageView view, char status) {
@@ -64,21 +70,25 @@ public class MainActivity extends Activity {
         }
     }
 
-    private static class CheckWeisswurstTask extends AsyncTask<String, Integer, int[]> {
+    private static class CheckWeisswurstTask extends AsyncTask<String, Integer, WWStatus[]> {
 
         @Override
-        protected int[] doInBackground(final String... strings) {
+        protected WWStatus[] doInBackground(final String... strings) {
             WeisswurstInfo weisswurstInfo = new WeisswurstInfo();
-            return weisswurstInfo.checkWeisswurstStatusWeek();
+            try {
+                return weisswurstInfo.checkWeisswurstStatusWeek();
+            } catch (IOException e) {
+                return WWStatus.error();
+            }
         }
 
         @Override
-        protected void onPostExecute(int[] result) {
+        protected void onPostExecute(WWStatus[] result) {
             StringBuilder res = new StringBuilder();
-            for (int r : result) {
-                if (r < 0) {
+            for (WWStatus r : result) {
+                if (r.equals(WWStatus.ERROR)) {
                     res.append("-");
-                } else if (r == 0) {
+                } else if (r.equals(WWStatus.NOT_AVAILABLE)) {
                     res.append("n");
                 } else {
                     res.append("y");

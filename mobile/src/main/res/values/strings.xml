@@ -13,4 +13,5 @@
     <string name="monday">Montag</string>
     <string name="logotext">Mmmmh, lecker Weißwürste…</string>
     <string name="updateInfo">Aktualisiere die angezeigten Informationen</string>
+    <string name="connectionErrorMessage">Can\'t get Cafeteria info from OpenMensa. Check your Internet connection or try again later!</string>
 </resources>

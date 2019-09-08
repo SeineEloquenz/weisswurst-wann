@@ -44,23 +44,20 @@ public final class WeisswurstInfo {
      * Checks whether weisswurst will be available the next weekday
      * @return true if weisswurst available, false if not
      */
-    public boolean checkWeisswurstStatusTomorrow() {
+    public boolean checkWeisswurstStatusTomorrow() throws IOException {
         return checkWeisswurstStatus(this.getDateToCheck());
     }
 
     /**
      * Checks the next week for days where weisswurst is available
-     * neg means day has already passed
-     * zero means no weisswurst
-     * pos means weisswurst
-     * @return
+     * @return WWStatus array for each day monday-friday
      */
-    public int[] checkWeisswurstStatusWeek() {
-        int[] ret = {-1, -1, -1, -1, -1};
+    public WWStatus[] checkWeisswurstStatusWeek() throws IOException {
+        WWStatus[] ret = WWStatus.error();
         String[] dates = getNextWeekDates();
         for (int i = 0; i < ret.length && i < dates.length; i++) {
             if (!dates[i].equals("i")) {
-                ret[i] = checkWeisswurstStatus(dates[i]) ? 1 : 0;
+                ret[i] = checkWeisswurstStatus(dates[i]) ? WWStatus.AVAILABLE : WWStatus.NOT_AVAILABLE;
             }
         }
         return ret;
@@ -71,7 +68,7 @@ public final class WeisswurstInfo {
      * @param date formatted date to check for
      * @return true if weisswurst available, false if not
      */
-    public boolean checkWeisswurstStatus(String date) {
+    public boolean checkWeisswurstStatus(String date) throws IOException {
         JsonArray meals = this.getMeals(date);
         for (JsonElement meal : meals) {
             String name = meal.getAsJsonObject().get("name").getAsString();
@@ -86,7 +83,7 @@ public final class WeisswurstInfo {
      * Gets the {@link JsonArray} of the meals on the next weekday
      * @return jsonarry with the meals
      */
-    private JsonArray getMeals(String date) {
+    private JsonArray getMeals(String date) throws IOException {
         String uri = OPEN_MENSA_URL + String.format(GET_MEALS, date);
         URL url;
         try {
@@ -95,16 +92,11 @@ public final class WeisswurstInfo {
             e.printStackTrace();
             return new JsonArray();
         }
-        try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            JsonArray resp = gson.fromJson(new InputStreamReader(connection.getInputStream()), JsonArray.class);
-            connection.disconnect();
-            return resp;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new JsonArray();
+        JsonArray resp = gson.fromJson(new InputStreamReader(connection.getInputStream()), JsonArray.class);
+        connection.disconnect();
+        return resp;
     }
 
     /**

@@ -8,6 +8,8 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
+import java.io.IOException;
+
 public class WWIntentService extends IntentService {
 
     private static int notificationId = 0;
@@ -20,14 +22,18 @@ public class WWIntentService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
         createNotificationChannel();
         WeisswurstInfo info = new WeisswurstInfo();
-        if (info.checkWeisswurstStatusTomorrow()) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "WeisswurstWann")
-                    .setSmallIcon(R.drawable.ww_notif)
-                    .setContentTitle("Weißwürste!")
-                    .setContentText(info.getNotificationText())
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-            NotificationManagerCompat not = NotificationManagerCompat.from(getApplicationContext());
-            not.notify(notificationId++, builder.build());
+        try {
+            if (info.checkWeisswurstStatusTomorrow()) {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "WeisswurstWann")
+                        .setSmallIcon(R.drawable.ww_notif)
+                        .setContentTitle("Weißwürste!")
+                        .setContentText(info.getNotificationText())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                NotificationManagerCompat not = NotificationManagerCompat.from(getApplicationContext());
+                not.notify(notificationId++, builder.build());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
