@@ -52,12 +52,12 @@ public final class WeisswurstInfo {
      * Checks the next week for days where weisswurst is available
      * @return WWStatus array for each day monday-friday
      */
-    public WWStatus[] checkWeisswurstStatusWeek() throws IOException {
-        WWStatus[] ret = WWStatus.error();
+    public WWWeek checkWeisswurstStatusWeek() throws IOException {
+        WWWeek ret = new WWWeek();
         String[] dates = getNextWeekDates();
-        for (int i = 0; i < ret.length && i < dates.length; i++) {
+        for (int i = 0; i < ret.length() && i < dates.length; i++) {
             if (!dates[i].equals("i")) {
-                ret[i] = checkWeisswurstStatus(dates[i]) ? WWStatus.AVAILABLE : WWStatus.NOT_AVAILABLE;
+                ret.update(i, checkWeisswurstStatus(dates[i]) ? WWStatus.AVAILABLE : WWStatus.NOT_AVAILABLE);
             }
         }
         return ret;

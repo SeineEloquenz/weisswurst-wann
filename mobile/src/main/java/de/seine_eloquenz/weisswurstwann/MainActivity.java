@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class MainActivity extends Activity {
 
-    private static String wwStatus = "-----";
+    private static WWWeek wwStatus = new WWWeek();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,25 +44,25 @@ public class MainActivity extends Activity {
         ImageView thu = findViewById(R.id.wwthu);
         ImageView fri = findViewById(R.id.wwfri);
         task.execute();
-        updateStatusIcon(mon, wwStatus.charAt(0));
-        updateStatusIcon(tue, wwStatus.charAt(1));
-        updateStatusIcon(wed, wwStatus.charAt(2));
-        updateStatusIcon(thu, wwStatus.charAt(3));
-        updateStatusIcon(fri, wwStatus.charAt(4));
-        if (wwStatus.contains("-")) {
+        updateStatusIcon(mon, wwStatus.monday());
+        updateStatusIcon(tue, wwStatus.tuesday());
+        updateStatusIcon(wed, wwStatus.wednesday());
+        updateStatusIcon(thu, wwStatus.thursday());
+        updateStatusIcon(fri, wwStatus.friday());
+        if (wwStatus.errorOccured()) {
             Toast.makeText(this, this.getString(R.string.connectionErrorMessage), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void updateStatusIcon(ImageView view, char status) {
+    private void updateStatusIcon(ImageView view, WWStatus status) {
         switch (status) {
-            case '-':
+            case NO_INFO:
                 view.setBackgroundColor(Color.GRAY);
                 break;
-            case 'y':
+            case AVAILABLE:
                 view.setBackgroundColor(Color.GREEN);
                 break;
-            case 'n':
+            case NOT_AVAILABLE:
                 view.setBackgroundColor(Color.RED);
                 break;
             default:
@@ -70,31 +70,21 @@ public class MainActivity extends Activity {
         }
     }
 
-    private static class CheckWeisswurstTask extends AsyncTask<String, Integer, WWStatus[]> {
+    private static class CheckWeisswurstTask extends AsyncTask<String, Integer, WWWeek> {
 
         @Override
-        protected WWStatus[] doInBackground(final String... strings) {
+        protected WWWeek doInBackground(final String... strings) {
             WeisswurstInfo weisswurstInfo = new WeisswurstInfo();
             try {
                 return weisswurstInfo.checkWeisswurstStatusWeek();
             } catch (IOException e) {
-                return WWStatus.error();
+                return WWWeek.error();
             }
         }
 
         @Override
-        protected void onPostExecute(WWStatus[] result) {
-            StringBuilder res = new StringBuilder();
-            for (WWStatus r : result) {
-                if (r.equals(WWStatus.ERROR)) {
-                    res.append("-");
-                } else if (r.equals(WWStatus.NOT_AVAILABLE)) {
-                    res.append("n");
-                } else {
-                    res.append("y");
-                }
-            }
-            wwStatus = res.toString();
+        protected void onPostExecute(WWWeek result) {
+            wwStatus = result;
         }
     }
 }
